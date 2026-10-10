@@ -1,0 +1,7 @@
+<Solution>
+  <Folder Name="/Элементы решения/">
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="RobotPlanet.Core/RobotPlanet.Core.csproj" />
+  <Project Path="RobotPlanet/RobotPlanet.WpfApp.csproj" />
+</Solution>
