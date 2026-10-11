@@ -105,7 +105,7 @@ Kasutasin .NET 10 ja WPF-i.
 
 Tegin projekti koostöös klassikaaslasega.
 
-- **Klassikaaslane:** [P1prka](https://github.com/P1prka)
+- **Klassikaaslane:** Ruslana Nekrakha ([P1prka](https://github.com/P1prka))
 - **Issue:** [DanceBot #1](https://github.com/gubatsjovasofja-blip/RobotPlanet/issues/1)
 - **Pull Request:** [DanceBot #2](https://github.com/gubatsjovasofja-blip/RobotPlanet/pull/2)
 
