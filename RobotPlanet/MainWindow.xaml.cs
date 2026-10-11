@@ -23,6 +23,7 @@ namespace RobotPlanet
             AddCleanerButton.Content = RobotPlanet.WpfApp.Resources.AddCleanerButton;
             AddExplorerButton.Content = RobotPlanet.WpfApp.Resources.AddExplorerButton;
             AddRepairButton.Content = RobotPlanet.WpfApp.Resources.AddRepairButton;
+            AddDanceButton.Content = RobotPlanet.WpfApp.Resources.AddDanceButton;
             RemoveButton.Content = RobotPlanet.WpfApp.Resources.RemoveButton;
 
             NormalButton.Content = RobotPlanet.WpfApp.Resources.NormalButton;
@@ -83,6 +84,24 @@ namespace RobotPlanet
             robots.Add(new RepairBot(name));
             RobotNameTextBox.Clear();
         }
+
+
+
+        private void AddDance_Click(object sender, RoutedEventArgs e)
+        {
+            string name = RobotNameTextBox.Text.Trim();
+
+            if (name == "")
+            {
+                MessageBox.Show(RobotPlanet.WpfApp.Resources.InvalidRobotName);
+                return;
+            }
+
+            robots.Add(new DanceBot(name));
+            RobotNameTextBox.Clear();
+        }
+
+
 
         private void Remove_Click(object sender, RoutedEventArgs e)
         {

@@ -53,7 +53,12 @@
                 <Button x:Name="AddRepairButton"
                         Margin="0,0,0,5"
                         Height="35"
-                        Click="AddRepair_Click"/>
+                        Click="AddRepair_Click"/>       
+
+                <Button x:Name="AddDanceButton"
+                        Margin="0,0,0,5"
+                        Height="35"
+                        Click="AddDance_Click"/>
 
                 <Button x:Name="RemoveButton"
                         Height="35"
