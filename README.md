@@ -23,11 +23,12 @@ Core ei sõltu WPF-ist.
 
 ## Robotid
 
-Mul on üks abstraktne klass **Robot** ja kolm robotit:
+Mul on üks abstraktne klass **Robot** ja neli robotit:
 
 - **CleanerBot** – koristab.
 - **ExplorerBot** – uurib planeeti.
 - **RepairBot** – parandab teisi roboteid.
+- **DanceBot** – tantsib ja korraldab robotidiskot.
 
 Igal robotil on nimi ja energia. Alguses on energiat 100.
 
@@ -88,10 +89,13 @@ Proovisin programmis järgmisi asju:
 7. Roboti eemaldamisel kaob ta nimekirjast.
 8. Tühja nimega robotit ei saa lisada.
 9. Kui RepairBotil on vähe energiat, muutub tema naljakas tegevus.
+10. DanceBot teeb tavalise tegevuse. Energia muutub 100 → 90.
+11. DanceBot teeb naljaka tegevuse. Energia muutub 90 → 70.
+12. Kui DanceBotil on ainult 10 energiat, ei saa ta teha 20 energiat nõudvat tegevust. Programm näitab veateadet ja energia ei muutu.
 
 ## Kuidas programmi käivitada?
 
-1. Ava `RobotPlanet.sln` Visual Studios.
+1. Ava `RobotPlanet.slnx` Visual Studios.
 2. Vali `RobotPlanet.WpfApp` käivitusprojektiks.
 3. Vajuta F5.
 
@@ -99,11 +103,18 @@ Kasutasin .NET 10 ja WPF-i.
 
 ## Koostöö
 
-*Selle osa täidan pärast koostööd klassikaaslasega.*
+Tegin projekti koostöös klassikaaslasega.
 
-- Klassikaaslane:
-- Issue:
-- Pull Request:
+- **Klassikaaslane:** [P1prka](https://github.com/P1prka)
+- **Issue:** [DanceBot #1](https://github.com/gubatsjovasofja-blip/RobotPlanet/issues/1)
+- **Pull Request:** [DanceBot #2](https://github.com/gubatsjovasofja-blip/RobotPlanet/pull/2)
+
+Klassikaaslane lisas minu projekti uue roboti DanceBot. Mina kontrollisin Visual Studios, et robot töötab õigesti, ja ühendasin Pull Requesti põhiharuga.
+
+Mina lisasin klassikaaslase CrazyZoo projekti uue looma Monkey.
+
+- **CrazyZoo Issue:** [Monkey #1](https://github.com/P1prka/CrazyZoo/issues/1)
+- **CrazyZoo Pull Request:** [Monkey #2](https://github.com/P1prka/CrazyZoo/pull/2)
 
 ## Tehisintellekti kasutamine
 
