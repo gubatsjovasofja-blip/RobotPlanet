@@ -70,6 +70,15 @@ namespace RobotPlanet.WpfApp {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Lisa tantsurobot.
+        /// </summary>
+        internal static string AddDanceButton {
+            get {
+                return ResourceManager.GetString("AddDanceButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Lisa uurimisrobot.
         /// </summary>
         internal static string AddExplorerButton {
