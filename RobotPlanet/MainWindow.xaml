@@ -24,7 +24,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- Левая часть: список и добавление роботов -->
+        <!-- Левая часть -->
         <Border Grid.Column="0"
                 Background="White"
                 CornerRadius="10"
@@ -36,6 +36,16 @@
                            FontSize="20"
                            FontWeight="Bold"
                            Margin="0,0,0,10"/>
+
+                <!-- Выбор репозитория -->
+                <TextBlock Text="Vali hoidla"
+                           Margin="0,0,0,5"
+                           FontWeight="Bold"/>
+
+                <ComboBox Height="30"
+                          Margin="0,0,0,10"
+                          ItemsSource="{Binding RepositoryNames}"
+                          SelectedItem="{Binding SelectedRepository, Mode=TwoWay}"/>
 
                 <!-- Поиск -->
                 <TextBox Height="30"
@@ -63,7 +73,7 @@
                 </UniformGrid>
 
                 <!-- Список роботов -->
-                <ListBox Height="220"
+                <ListBox Height="170"
                          ItemsSource="{Binding Source={StaticResource RobotsView}}"
                          SelectedItem="{Binding SelectedRobot, Mode=TwoWay}">
 
@@ -82,33 +92,33 @@
 
                 <!-- Количество роботов по типам -->
                 <ItemsControl ItemsSource="{Binding GroupSummary}"
-                              Margin="0,5,0,5"/>
+                              Margin="0,3,0,3"/>
 
                 <!-- Имя нового робота -->
                 <TextBox Height="30"
-                         Margin="0,10,0,5"
+                         Margin="0,5,0,3"
                          Padding="5"
                          MaxLength="30"
                          Text="{Binding RobotName, UpdateSourceTrigger=PropertyChanged}"/>
 
-                <!-- Кнопки добавления и удаления -->
+                <!-- Добавление роботов -->
                 <Button x:Name="AddCleanerButton"
-                        Margin="0,10,0,5"
+                        Margin="0,5,0,3"
                         Height="35"
                         Command="{Binding AddCleanerCommand}"/>
 
                 <Button x:Name="AddExplorerButton"
-                        Margin="0,0,0,5"
+                        Margin="0,0,0,3"
                         Height="35"
                         Command="{Binding AddExplorerCommand}"/>
 
                 <Button x:Name="AddRepairButton"
-                        Margin="0,0,0,5"
+                        Margin="0,0,0,3"
                         Height="35"
                         Command="{Binding AddRepairCommand}"/>
 
                 <Button x:Name="AddDanceButton"
-                        Margin="0,0,0,5"
+                        Margin="0,0,0,3"
                         Height="35"
                         Command="{Binding AddDanceCommand}"/>
 
@@ -168,7 +178,7 @@
                             Command="{Binding ScanCommand}"/>
                 </WrapPanel>
 
-                <!-- Журнал действий -->
+                <!-- Журнал событий -->
                 <TextBlock x:Name="LogTitleText"
                            FontSize="18"
                            FontWeight="Bold"

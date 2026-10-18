@@ -11,15 +11,39 @@ namespace RobotPlanet
     public class MainViewModel : INotifyPropertyChanged
     {
         private RobotUniverse universe = new RobotUniverse();
+
         private Robot? selectedRobot;
         private string robotName = "";
         private string searchText = "";
         private string sortMode = "";
+        private string selectedRepository = "Kõik robotid";
 
         // Списки для окна
         public ObservableCollection<Robot> Robots { get; } = new();
         public ObservableCollection<string> Logs { get; } = new();
         public ObservableCollection<string> GroupSummary { get; } = new();
+
+        // Названия репозиториев
+        public ObservableCollection<string> RepositoryNames { get; } = new()
+        {
+            "Kõik robotid",
+            "CleanerBot",
+            "ExplorerBot",
+            "RepairBot",
+            "DanceBot"
+        };
+
+        // Выбранный репозиторий
+        public string SelectedRepository
+        {
+            get { return selectedRepository; }
+            set
+            {
+                selectedRepository = value;
+                Notify("SelectedRepository");
+                RefreshRobots();
+            }
+        }
 
         // Имя нового робота
         public string RobotName
@@ -30,7 +54,6 @@ namespace RobotPlanet
                 robotName = value;
                 Notify("RobotName");
 
-                // Обновляю кнопки добавления
                 AddCleanerCommand?.Update();
                 AddExplorerCommand?.Update();
                 AddRepairCommand?.Update();
@@ -38,7 +61,7 @@ namespace RobotPlanet
             }
         }
 
-        // Поиск роботов
+        // Текст поиска
         public string SearchText
         {
             get { return searchText; }
@@ -57,10 +80,12 @@ namespace RobotPlanet
             set
             {
                 selectedRobot = value;
+
                 Notify("SelectedRobot");
                 Notify("SelectedName");
                 Notify("Energy");
                 Notify("EnergyText");
+
                 UpdateCommands();
             }
         }
@@ -77,7 +102,12 @@ namespace RobotPlanet
 
         public string EnergyText
         {
-            get { return SelectedRobot == null ? "" : Energy + " / 100"; }
+            get
+            {
+                return SelectedRobot == null
+                    ? ""
+                    : Energy + " / 100";
+            }
         }
 
         public bool IsGrouped
@@ -85,16 +115,18 @@ namespace RobotPlanet
             get { return sortMode == "Group"; }
         }
 
-        // Команды для кнопок
+        // Команды
         public RelayCommand AddCleanerCommand { get; }
         public RelayCommand AddExplorerCommand { get; }
         public RelayCommand AddRepairCommand { get; }
         public RelayCommand AddDanceCommand { get; }
+
         public RelayCommand RemoveCommand { get; }
         public RelayCommand NormalCommand { get; }
         public RelayCommand CrazyCommand { get; }
         public RelayCommand ChargeCommand { get; }
         public RelayCommand ScanCommand { get; }
+
         public RelayCommand SortNameCommand { get; }
         public RelayCommand SortEnergyCommand { get; }
         public RelayCommand GroupCommand { get; }
@@ -102,13 +134,13 @@ namespace RobotPlanet
 
         public MainViewModel()
         {
-            // Сообщения от роботов идут в журнал
+            // Получаю сообщения из репозиториев
             universe.Cleaners.MessageCreated += AddLog;
             universe.Explorers.MessageCreated += AddLog;
             universe.Repairers.MessageCreated += AddLog;
             universe.Dancers.MessageCreated += AddLog;
 
-            // Добавление роботов
+            // Команды добавления роботов
             AddCleanerCommand = new RelayCommand(
                 () => AddRobot("Cleaner"), CanAddRobot);
 
@@ -121,17 +153,32 @@ namespace RobotPlanet
             AddDanceCommand = new RelayCommand(
                 () => AddRobot("Dance"), CanAddRobot);
 
-            // Действия с роботами
-            RemoveCommand = new RelayCommand(RemoveRobot, () => SelectedRobot != null);
-            NormalCommand = new RelayCommand(NormalAction, () => SelectedRobot != null);
-            CrazyCommand = new RelayCommand(CrazyAction, () => SelectedRobot != null);
-            ChargeCommand = new RelayCommand(Charge, () => SelectedRobot is IChargeable);
-            ScanCommand = new RelayCommand(Scan, () => SelectedRobot is IScannable);
+            // Команды действий
+            RemoveCommand = new RelayCommand(
+                RemoveRobot, () => SelectedRobot != null);
 
-            // Сортировка и группировка
-            SortNameCommand = new RelayCommand(() => SortRobots("Name"));
-            SortEnergyCommand = new RelayCommand(() => SortRobots("Energy"));
-            GroupCommand = new RelayCommand(() => SortRobots("Group"));
+            NormalCommand = new RelayCommand(
+                NormalAction, () => SelectedRobot != null);
+
+            CrazyCommand = new RelayCommand(
+                CrazyAction, () => SelectedRobot != null);
+
+            ChargeCommand = new RelayCommand(
+                Charge, () => SelectedRobot is IChargeable);
+
+            ScanCommand = new RelayCommand(
+                Scan, () => SelectedRobot is IScannable);
+
+            // Команды поиска, сортировки и группировки
+            SortNameCommand = new RelayCommand(
+                () => SortRobots("Name"));
+
+            SortEnergyCommand = new RelayCommand(
+                () => SortRobots("Energy"));
+
+            GroupCommand = new RelayCommand(
+                () => SortRobots("Group"));
+
             ShowAllCommand = new RelayCommand(ShowAll);
 
             // Начальные роботы
@@ -142,7 +189,7 @@ namespace RobotPlanet
             RefreshRobots();
         }
 
-        // Проверяю, что имя не пустое
+        // Проверяю имя нового робота
         private bool CanAddRobot()
         {
             return !string.IsNullOrWhiteSpace(RobotName);
@@ -153,7 +200,8 @@ namespace RobotPlanet
         {
             if (!CanAddRobot())
             {
-                MessageBox.Show(RobotPlanet.WpfApp.Resources.InvalidRobotName);
+                MessageBox.Show(
+                    RobotPlanet.WpfApp.Resources.InvalidRobotName);
                 return;
             }
 
@@ -169,6 +217,7 @@ namespace RobotPlanet
                 robot = new DanceBot(RobotName);
 
             universe.Add(robot);
+
             RobotName = "";
             RefreshRobots();
         }
@@ -180,11 +229,13 @@ namespace RobotPlanet
                 return;
 
             universe.Remove(SelectedRobot);
+
             AddLog(RobotPlanet.WpfApp.Resources.RobotRemoved);
+
             RefreshRobots();
         }
 
-        // Выбираю сортировку
+        // Выбираю сортировку или группировку
         private void SortRobots(string mode)
         {
             sortMode = mode;
@@ -196,6 +247,8 @@ namespace RobotPlanet
         {
             sortMode = "";
             SearchText = "";
+            SelectedRepository = "Kõik robotid";
+
             RefreshRobots();
         }
 
@@ -203,18 +256,41 @@ namespace RobotPlanet
         private void RefreshRobots()
         {
             Robot? oldRobot = SelectedRobot;
+
+            // Получаю всех роботов
             var result = universe.GetAllRobots();
 
-            if (SearchText != "")
-                result = universe.Search(SearchText);
+            // Фильтрую по выбранному репозиторию
+            if (SelectedRepository != "Kõik robotid")
+            {
+                result = result.Where(robot =>
+                    robot.RobotType == SelectedRepository);
+            }
 
+            // Ищу по имени
+            if (!string.IsNullOrWhiteSpace(SearchText))
+            {
+                result = result.Where(robot =>
+                    robot.Name.Contains(
+                        SearchText,
+                        StringComparison.OrdinalIgnoreCase));
+            }
+
+            // Сортирую или группирую
             if (sortMode == "Name")
+            {
                 result = result.OrderBy(robot => robot.Name);
+            }
             else if (sortMode == "Energy")
+            {
                 result = result.OrderByDescending(robot => robot.Energy);
+            }
             else if (sortMode == "Group")
+            {
                 result = result.OrderBy(robot => robot.RobotType);
+            }
 
+            // Обновляю отображаемый список
             Robots.Clear();
 
             foreach (Robot robot in result.ToList())
@@ -222,24 +298,30 @@ namespace RobotPlanet
                 Robots.Add(robot);
             }
 
-            // Считаю количество роботов каждого типа
+            // Обновляю количество роботов каждого типа
             GroupSummary.Clear();
 
             if (sortMode == "Group")
             {
-                var groups = result.GroupBy(robot => robot.RobotType);
+                var groups = Robots.GroupBy(
+                    robot => robot.RobotType);
 
                 foreach (var group in groups)
                 {
-                    GroupSummary.Add(group.Key + ": " + group.Count());
+                    GroupSummary.Add(
+                        group.Key + ": " + group.Count());
                 }
             }
 
-            // Сохраняю выбранного робота
+            // Сохраняю выбор, если робот ещё в списке
             if (oldRobot != null && Robots.Contains(oldRobot))
+            {
                 SelectedRobot = oldRobot;
+            }
             else
+            {
                 SelectedRobot = Robots.FirstOrDefault();
+            }
 
             Notify("IsGrouped");
         }
@@ -261,7 +343,7 @@ namespace RobotPlanet
             }
         }
 
-        // Особое действие и реакции других роботов
+        // CrazyAction и реакции роботов того же типа
         private void CrazyAction()
         {
             if (SelectedRobot == null)
@@ -305,18 +387,20 @@ namespace RobotPlanet
             }
         }
 
-        // Ошибка при нехватке энергии
+        // Сообщение об ошибке энергии
         private void ShowEnergyError()
         {
-            MessageBox.Show(RobotPlanet.WpfApp.Resources.NotEnoughEnergy);
+            MessageBox.Show(
+                RobotPlanet.WpfApp.Resources.NotEnoughEnergy);
         }
 
-        // Обновляю энергию на экране
+        // Обновляю энергию после действия
         private void UpdateEnergy()
         {
             Notify("Energy");
             Notify("EnergyText");
 
+            // При сортировке по энергии обновляю список
             if (sortMode == "Energy")
                 RefreshRobots();
         }
@@ -337,12 +421,14 @@ namespace RobotPlanet
             Logs.Add(message);
         }
 
-        // Сообщаю окну об изменениях
+        // Уведомляю интерфейс об изменениях
         public event PropertyChangedEventHandler? PropertyChanged;
 
         private void Notify(string name)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            PropertyChanged?.Invoke(
+                this,
+                new PropertyChangedEventArgs(name));
         }
     }
 }
