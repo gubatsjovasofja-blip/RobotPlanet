@@ -30,7 +30,10 @@ namespace RobotPlanet
             "CleanerBot",
             "ExplorerBot",
             "RepairBot",
-            "DanceBot"
+            "DanceBot",
+            "ChefBot",
+            "GuardBot",
+            "FlyingBot"
         };
 
         // Выбранный репозиторий
@@ -58,6 +61,9 @@ namespace RobotPlanet
                 AddExplorerCommand?.Update();
                 AddRepairCommand?.Update();
                 AddDanceCommand?.Update();
+                AddChefCommand?.Update();
+                AddGuardCommand?.Update();
+                AddFlyingCommand?.Update();
             }
         }
 
@@ -121,6 +127,11 @@ namespace RobotPlanet
         public RelayCommand AddRepairCommand { get; }
         public RelayCommand AddDanceCommand { get; }
 
+
+        public RelayCommand AddChefCommand { get; }
+        public RelayCommand AddGuardCommand { get; }
+        public RelayCommand AddFlyingCommand { get; }
+
         public RelayCommand RemoveCommand { get; }
         public RelayCommand NormalCommand { get; }
         public RelayCommand CrazyCommand { get; }
@@ -139,6 +150,9 @@ namespace RobotPlanet
             universe.Explorers.MessageCreated += AddLog;
             universe.Repairers.MessageCreated += AddLog;
             universe.Dancers.MessageCreated += AddLog;
+            universe.Chefs.MessageCreated += AddLog;
+            universe.Guards.MessageCreated += AddLog;
+            universe.Flyers.MessageCreated += AddLog;
 
             // Команды добавления роботов
             AddCleanerCommand = new RelayCommand(
@@ -152,6 +166,16 @@ namespace RobotPlanet
 
             AddDanceCommand = new RelayCommand(
                 () => AddRobot("Dance"), CanAddRobot);
+
+            AddChefCommand = new RelayCommand(
+                () => AddRobot("Chef"), CanAddRobot);
+
+            AddGuardCommand = new RelayCommand(
+                () => AddRobot("Guard"), CanAddRobot);
+
+            AddFlyingCommand = new RelayCommand(
+                () => AddRobot("Flying"), CanAddRobot);
+
 
             // Команды действий
             RemoveCommand = new RelayCommand(
@@ -185,6 +209,9 @@ namespace RobotPlanet
             universe.Add(new CleanerBot("Cleaner 1"));
             universe.Add(new ExplorerBot("Explorer 1"));
             universe.Add(new RepairBot("Repair 1"));
+            universe.Add(new ChefBot("Chef 1"));
+            universe.Add(new GuardBot("Guard 1"));
+            universe.Add(new FlyingBot("Flying 1"));
 
             RefreshRobots();
         }
@@ -213,8 +240,17 @@ namespace RobotPlanet
                 robot = new ExplorerBot(RobotName);
             else if (type == "Repair")
                 robot = new RepairBot(RobotName);
-            else
+
+            else if (type == "Dance")
                 robot = new DanceBot(RobotName);
+            else if (type == "Chef")
+                robot = new ChefBot(RobotName);
+            else if (type == "Guard")
+                robot = new GuardBot(RobotName);
+            else if (type == "Flying")
+                robot = new FlyingBot(RobotName);
+            else
+                return;
 
             universe.Add(robot);
 
