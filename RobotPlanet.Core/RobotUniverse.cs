@@ -7,27 +7,15 @@ namespace RobotPlanet.Core
 {
     public class RobotUniverse
     {
-        // Отдельный список для каждого типа роботов
+        // У каждого типа роботов свой репозиторий
         public Repository<CleanerBot> Cleaners { get; } = new();
         public Repository<ExplorerBot> Explorers { get; } = new();
         public Repository<RepairBot> Repairers { get; } = new();
         public Repository<DanceBot> Dancers { get; } = new();
 
-        // Добавляю нового робота
+        // Добавляю робота в его репозиторий
         public void Add(Robot robot)
         {
-            // Проверяю, что такого робота еще нет
-            if (GetAllRobots().Contains(robot))
-                return;
-
-            // Роботы других типов приветствуют нового
-            foreach (Robot other in GetAllRobots())
-            {
-                if (other.GetType() != robot.GetType())
-                    other.OnRobotAdded(robot);
-            }
-
-            // Добавляю робота в нужный список
             if (robot is CleanerBot cleaner)
                 Cleaners.Add(cleaner);
             else if (robot is ExplorerBot explorer)
@@ -38,14 +26,9 @@ namespace RobotPlanet.Core
                 Dancers.Add(dancer);
         }
 
-        // Удаляю выбранного робота
+        // Удаляю робота из его репозитория
         public void Remove(Robot robot)
         {
-            // Проверяю, есть ли такой робот
-            if (!GetAllRobots().Contains(robot))
-                return;
-
-            // Удаляю робота из его списка
             if (robot is CleanerBot cleaner)
                 Cleaners.Remove(cleaner);
             else if (robot is ExplorerBot explorer)
@@ -54,23 +37,11 @@ namespace RobotPlanet.Core
                 Repairers.Remove(repair);
             else if (robot is DanceBot dancer)
                 Dancers.Remove(dancer);
-
-            // Роботы других типов прощаются с ним
-            foreach (Robot other in GetAllRobots())
-            {
-                if (other.GetType() != robot.GetType())
-                    other.OnRobotRemoved(robot);
-            }
         }
 
-        // Выполняю CrazyAction
+        // Выполняю CrazyAction в нужном репозитории
         public void CrazyAction(Robot robot)
         {
-            // Проверяю, есть ли такой робот
-            if (!GetAllRobots().Contains(robot))
-                return;
-
-            // Запускаю действие выбранного робота
             if (robot is CleanerBot cleaner)
                 Cleaners.CrazyAction(cleaner);
             else if (robot is ExplorerBot explorer)
@@ -79,16 +50,9 @@ namespace RobotPlanet.Core
                 Repairers.CrazyAction(repair);
             else if (robot is DanceBot dancer)
                 Dancers.CrazyAction(dancer);
-
-            // Роботы других типов реагируют
-            foreach (Robot other in GetAllRobots())
-            {
-                if (other.GetType() != robot.GetType())
-                    other.OnRobotActed(robot);
-            }
         }
 
-        // Собираю всех роботов в один список
+        // Собираю всех роботов для отображения
         public IEnumerable<Robot> GetAllRobots()
         {
             return Cleaners.GetAll().Cast<Robot>()
