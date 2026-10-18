@@ -23,7 +23,7 @@ Core ei sõltu WPF-ist.
 
 ## Robotid
 
-Mul on üks abstraktne klass **Robot** ja neli robotit:
+Vol.1 versioonis oli mul üks abstraktne klass **Robot** ja neli robotit:
 
 - **CleanerBot** – koristab.
 - **ExplorerBot** – uurib planeeti.
@@ -121,3 +121,65 @@ Mina lisasin klassikaaslase CrazyZoo projekti uue looma Monkey.
 Kasutasin ChatGPT-d abivahendina, et paremini mõista C# ja WPF-i ning saada abi koodi kirjutamisel ja vigade parandamisel.
 
 Töötasin projektiga Visual Studios, tegin muudatusi ja kontrollisin ise, kas programm töötab õigesti.
+
+## Crazy Universe Vol.2
+
+### Projekti täiendamine
+
+Vol.2 ülesandes jätkasin oma RobotPlanet projektiga ja lisasin uusi võimalusi.
+
+Kasutasin `IRepository<T>` ja `Repository<T>` klasse, et hoida erinevaid robotitüüpe eraldi. Roboteid saab lisada ja eemaldada.
+
+### Sündmused
+
+Kui robot teeb `CrazyAction()` tegevuse, reageerivad sellele teised sama hoidla robotid.
+
+Kui robot eemaldatakse hoidlast, ei reageeri ta enam sündmustele.
+
+Reaktsioonid kuvatakse tegevuste logis ja võivad muuta roboti energiat.
+
+### LINQ
+
+Kasutasin kolme LINQ võimalust:
+
+- `Where()` – robotite filtreerimiseks.
+- `OrderBy()` – robotite järjestamiseks.
+- `GroupBy()` – robotite rühmitamiseks.
+
+### WPF ja MVVM
+
+Täiendasin programmi MVVM põhimõtte järgi.
+
+Kasutasin `INotifyPropertyChanged`, `ObservableCollection` ja `ICommand`.
+
+Kasutaja saab valida robotite hoidla, lisada ja eemaldada roboteid ning näha nende tegevusi ja energia muutumist.
+
+### Uued robotid
+
+Vol.2 jaoks lisas Ruslana kolm uut robotit:
+
+- **ChefBot** – valmistab süüa.
+- **GuardBot** – valvab.
+- **FlyingBot** – lendab.
+
+Nüüd on projektis kokku seitse robotitüüpi.
+
+### Koostöö Vol.2
+
+Tegin koostööd klassikaaslase Ruslana Nekrakhaga.
+
+- **Ruslana Pull Request:** [#5 – ChefBot, GuardBot ja FlyingBot](https://github.com/gubatsjovasofja-blip/RobotPlanet/pull/5)
+
+Kontrollisin Ruslana muudatusi ja ühendasin need oma Vol.2 harusse.
+
+Mina lisasin teise klassikaaslase RobotPlanet projekti kolm robotit: FireBot, MusicBot ja GardenBot.
+
+- **Minu Pull Request:** [#4 – FireBot, MusicBot ja GardenBot](https://github.com/soyawo-ut/RobotPlanet/pull/4)
+
+Klassikaaslane kontrollis minu muudatusi ja kiitis need heaks.
+
+### Testimine
+
+Kontrollisin Visual Studios, et projekt kompileerub vigadeta.
+
+Proovisin uute robotite tegevusi, energiakulu ja tegevuste logi. Kontrollisin ka robotite lisamist ja eemaldamist.
