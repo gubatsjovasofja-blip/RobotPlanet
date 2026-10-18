@@ -73,7 +73,7 @@
                 </UniformGrid>
 
                 <!-- Список роботов -->
-                <ListBox Height="170"
+                <ListBox Height="125"
                          ItemsSource="{Binding Source={StaticResource RobotsView}}"
                          SelectedItem="{Binding SelectedRobot, Mode=TwoWay}">
 
@@ -121,6 +121,23 @@
                         Margin="0,0,0,3"
                         Height="35"
                         Command="{Binding AddDanceCommand}"/>
+
+
+                <Button Content="Lisa ChefBot"
+                        Margin="0,0,0,3"
+                        Height="35"
+                        Command="{Binding AddChefCommand}"/>
+
+                <Button Content="Lisa GuardBot"
+                        Margin="0,0,0,3"
+                        Height="35"
+                        Command="{Binding AddGuardCommand}"/>
+
+                <Button Content="Lisa FlyingBot"
+                        Margin="0,0,0,3"
+                        Height="35"
+                        Command="{Binding AddFlyingCommand}"/>          
+
 
                 <Button x:Name="RemoveButton"
                         Height="35"
