@@ -2,208 +2,440 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Robot Planet"
-        Height="780" Width="900"
-        MinHeight="780" MaxHeight="780"
-        MinWidth="900" MaxWidth="900"
-        ResizeMode="NoResize"
+        Width="1100" Height="780"
+        MinWidth="850" MinHeight="650"
         WindowStartupLocation="CenterScreen"
-        Background="#F3F4F6">
+        Background="#F5F3FA">
 
     <Window.Resources>
-        <CollectionViewSource x:Key="RobotsView"
-                              Source="{Binding Robots}">
-            <CollectionViewSource.GroupDescriptions>
-                <PropertyGroupDescription PropertyName="RobotType"/>
-            </CollectionViewSource.GroupDescriptions>
-        </CollectionViewSource>
+
+        <SolidColorBrush x:Key="Purple" Color="#7454B8"/>
+        <SolidColorBrush x:Key="DarkText" Color="#292438"/>
+        <SolidColorBrush x:Key="MutedText" Color="#716B7E"/>
+
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#EEE9F7"/>
+            <Setter Property="Foreground" Value="#49336F"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="10,6"/>
+            <Setter Property="MinHeight" Value="32"/>
+            <Setter Property="Margin" Value="0,0,7,5"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Padding" Value="7"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="BorderBrush" Value="#D8D1E5"/>
+        </Style>
+
+        <Style TargetType="ComboBox">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="BorderBrush" Value="#D8D1E5"/>
+        </Style>
+
+        <Style TargetType="GroupBox">
+            <Setter Property="BorderBrush" Value="#DDD5EA"/>
+            <Setter Property="Padding" Value="12"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
+        </Style>
+
+        <Style TargetType="TabItem">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="16,8"/>
+        </Style>
+
     </Window.Resources>
 
-    <Grid Margin="20">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="280"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
+    <DockPanel Margin="15">
 
-        <!-- Левая часть -->
-        <Border Grid.Column="0"
-                Background="White"
-                CornerRadius="10"
-                Padding="15"
-                Margin="0,0,15,0">
+        <!-- Pealkiri -->
+        <StackPanel DockPanel.Dock="Top"
+                    Margin="0,0,0,12">
 
-            <StackPanel>
-                <TextBlock x:Name="RobotsTitleText"
-                           FontSize="20"
-                           FontWeight="Bold"
-                           Margin="0,0,0,10"/>
+            <TextBlock Text="Robot Planet"
+                       FontSize="25"
+                       FontWeight="Bold"
+                       Foreground="{StaticResource DarkText}"/>
 
-                <!-- Выбор репозитория -->
-                <TextBlock Text="Vali hoidla"
-                           Margin="0,0,0,5"
-                           FontWeight="Bold"/>
+            <TextBlock Text="Robotite haldamine ja arvutused"
+                       Foreground="{StaticResource MutedText}"/>
+        </StackPanel>
 
-                <ComboBox Height="30"
-                          Margin="0,0,0,10"
-                          ItemsSource="{Binding RepositoryNames}"
-                          SelectedItem="{Binding SelectedRepository, Mode=TwoWay}"/>
+        <TabControl Background="White"
+                    BorderBrush="#DDD5EA"
+                    SelectionChanged="Tabs_SelectionChanged">
 
-                <!-- Поиск -->
-                <TextBox Height="30"
-                         Margin="0,0,0,8"
-                         Padding="5"
-                         Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
+            <!-- ROBOTID -->
+            <TabItem Header="Robotid">
 
-                <!-- Сортировка и группировка -->
-                <UniformGrid Columns="2" Margin="0,0,0,8">
-                    <Button Content="Nime järgi"
-                            Margin="2" Height="30"
-                            Command="{Binding SortNameCommand}"/>
+                <Grid Margin="12">
 
-                    <Button Content="Energia järgi"
-                            Margin="2" Height="30"
-                            Command="{Binding SortEnergyCommand}"/>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
 
-                    <Button Content="Grupeeri"
-                            Margin="2" Height="30"
-                            Command="{Binding GroupCommand}"/>
+                    <!-- ROBOTI VALIMINE -->
+                    <GroupBox Grid.Row="0"
+                              Header="1. Roboti valimine">
 
-                    <Button Content="Näita kõiki"
-                            Margin="2" Height="30"
-                            Command="{Binding ShowAllCommand}"/>
-                </UniformGrid>
+                        <StackPanel>
 
-                <!-- Список роботов -->
-                <ListBox Height="125"
-                         ItemsSource="{Binding Source={StaticResource RobotsView}}"
-                         SelectedItem="{Binding SelectedRobot, Mode=TwoWay}">
+                            <TextBlock x:Name="RobotsTitleText"
+                                       Visibility="Collapsed"/>
 
-                    <ListBox.GroupStyle>
-                        <GroupStyle>
-                            <GroupStyle.HeaderTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Name}"
-                                               FontWeight="Bold"
-                                               Margin="5,8,0,3"/>
-                                </DataTemplate>
-                            </GroupStyle.HeaderTemplate>
-                        </GroupStyle>
-                    </ListBox.GroupStyle>
-                </ListBox>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
 
-                <!-- Количество роботов по типам -->
-                <ItemsControl ItemsSource="{Binding GroupSummary}"
-                              Margin="0,3,0,3"/>
+                                <StackPanel Grid.Column="0"
+                                            Margin="0,0,12,0">
 
-                <!-- Имя нового робота -->
-                <TextBox Height="30"
-                         Margin="0,5,0,3"
-                         Padding="5"
-                         MaxLength="30"
-                         Text="{Binding RobotName, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <TextBlock Text="Roboti tüüp"
+                                               FontWeight="SemiBold"
+                                               Margin="0,0,0,5"/>
 
-                <!-- Добавление роботов -->
-                <Button x:Name="AddCleanerButton"
-                        Margin="0,5,0,3"
-                        Height="35"
-                        Command="{Binding AddCleanerCommand}"/>
+                                    <ComboBox ItemsSource="{Binding RepositoryNames}"
+                                              SelectedItem="{Binding SelectedRepository, Mode=TwoWay}"/>
+                                </StackPanel>
 
-                <Button x:Name="AddExplorerButton"
-                        Margin="0,0,0,3"
-                        Height="35"
-                        Command="{Binding AddExplorerCommand}"/>
+                                <StackPanel Grid.Column="1"
+                                            Margin="0,0,12,0">
 
-                <Button x:Name="AddRepairButton"
-                        Margin="0,0,0,3"
-                        Height="35"
-                        Command="{Binding AddRepairCommand}"/>
+                                    <TextBlock Text="Vali robot"
+                                               FontWeight="SemiBold"
+                                               Margin="0,0,0,5"/>
 
-                <Button x:Name="AddDanceButton"
-                        Margin="0,0,0,3"
-                        Height="35"
-                        Command="{Binding AddDanceCommand}"/>
+                                    <ComboBox ItemsSource="{Binding Robots}"
+                                              SelectedItem="{Binding SelectedRobot, Mode=TwoWay}"
+                                              DisplayMemberPath="Name"/>
+                                </StackPanel>
 
+                                <StackPanel Grid.Column="2">
 
-                <Button Content="Lisa ChefBot"
-                        Margin="0,0,0,3"
-                        Height="35"
-                        Command="{Binding AddChefCommand}"/>
+                                    <TextBlock Text="Otsi nime järgi"
+                                               FontWeight="SemiBold"
+                                               Margin="0,0,0,5"/>
 
-                <Button Content="Lisa GuardBot"
-                        Margin="0,0,0,3"
-                        Height="35"
-                        Command="{Binding AddGuardCommand}"/>
+                                    <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
+                                </StackPanel>
+                            </Grid>
 
-                <Button Content="Lisa FlyingBot"
-                        Margin="0,0,0,3"
-                        Height="35"
-                        Command="{Binding AddFlyingCommand}"/>          
+                            <WrapPanel Margin="0,12,0,0">
 
+                                <Button Content="Nime järgi"
+                                        Command="{Binding SortNameCommand}"/>
 
-                <Button x:Name="RemoveButton"
-                        Height="35"
-                        Command="{Binding RemoveCommand}"/>
-            </StackPanel>
-        </Border>
+                                <Button Content="Energia järgi"
+                                        Command="{Binding SortEnergyCommand}"/>
 
-        <!-- Правая часть: выбранный робот -->
-        <Border Grid.Column="1"
-                Background="White"
-                CornerRadius="10"
-                Padding="20">
+                                <Button Content="Grupeeri"
+                                        Command="{Binding GroupCommand}"/>
 
-            <StackPanel>
-                <TextBlock x:Name="SelectedRobotTitleText"
-                           FontSize="20"
-                           FontWeight="Bold"/>
+                                <Button Content="Näita kõiki"
+                                        Command="{Binding ShowAllCommand}"/>
 
-                <TextBlock Text="{Binding SelectedName, Mode=OneWay}"
-                           FontSize="16"
-                           Margin="0,10,0,15"/>
+                            </WrapPanel>
 
-                <!-- Энергия -->
-                <TextBlock x:Name="EnergyTitleText"
-                           Margin="0,0,0,5"/>
+                            <ItemsControl ItemsSource="{Binding GroupSummary}"
+                                          Margin="0,3,0,0"/>
 
-                <ProgressBar Minimum="0"
-                             Maximum="100"
-                             Value="{Binding Energy, Mode=OneWay}"
-                             Height="20"/>
+                        </StackPanel>
+                    </GroupBox>
 
-                <TextBlock Text="{Binding EnergyText, Mode=OneWay}"
-                           Margin="0,5,0,20"/>
+                    <!-- ROBOTI ANDMED JA LISAMINE -->
+                    <Grid Grid.Row="1">
 
-                <!-- Действия робота -->
-                <WrapPanel>
-                    <Button x:Name="NormalButton"
-                            Width="110" Height="35"
-                            Margin="0,0,10,10"
-                            Command="{Binding NormalCommand}"/>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
 
-                    <Button x:Name="CrazyButton"
-                            Width="110" Height="35"
-                            Margin="0,0,10,10"
-                            Command="{Binding CrazyCommand}"/>
+                        <!-- Valitud robot -->
+                        <GroupBox Grid.Column="0"
+                                  Header="2. Valitud robot"
+                                  Margin="0,0,10,10">
 
-                    <Button x:Name="ChargeButton"
-                            Width="110" Height="35"
-                            Margin="0,0,10,10"
-                            Command="{Binding ChargeCommand}"/>
+                            <StackPanel>
 
-                    <Button x:Name="ScanButton"
-                            Width="110" Height="35"
-                            Margin="0,0,10,10"
-                            Command="{Binding ScanCommand}"/>
-                </WrapPanel>
+                                <TextBlock x:Name="SelectedRobotTitleText"
+                                           Visibility="Collapsed"/>
 
-                <!-- Журнал событий -->
-                <TextBlock x:Name="LogTitleText"
-                           FontSize="18"
-                           FontWeight="Bold"
-                           Margin="0,15,0,10"/>
+                                <TextBlock Text="{Binding SelectedName, Mode=OneWay}"
+                                           FontSize="21"
+                                           FontWeight="SemiBold"
+                                           Foreground="{StaticResource Purple}"
+                                           Margin="0,0,0,12"/>
 
-                <ListBox Height="250"
-                         ItemsSource="{Binding Logs}"/>
-            </StackPanel>
-        </Border>
-    </Grid>
+                                <TextBlock x:Name="EnergyTitleText"
+                                           FontWeight="SemiBold"
+                                           Margin="0,0,0,5"/>
+
+                                <ProgressBar Minimum="0"
+                                             Maximum="100"
+                                             Height="17"
+                                             Value="{Binding Energy, Mode=OneWay}"
+                                             Foreground="#63B89A"
+                                             Background="#EAE5F0"/>
+
+                                <TextBlock Text="{Binding EnergyText, Mode=OneWay}"
+                                           Foreground="{StaticResource MutedText}"
+                                           Margin="0,5,0,12"/>
+
+                                <TextBlock Text="Roboti tegevused"
+                                           FontWeight="SemiBold"
+                                           Margin="0,0,0,8"/>
+
+                                <WrapPanel>
+
+                                    <Button x:Name="NormalButton"
+                                            Command="{Binding NormalCommand}"/>
+
+                                    <Button x:Name="CrazyButton"
+                                            Command="{Binding CrazyCommand}"/>
+
+                                    <Button x:Name="ChargeButton"
+                                            Command="{Binding ChargeCommand}"/>
+
+                                    <Button x:Name="ScanButton"
+                                            Command="{Binding ScanCommand}"/>
+
+                                </WrapPanel>
+
+                                <Button x:Name="RemoveButton"
+                                        Content="Kustuta robot"
+                                        HorizontalAlignment="Left"
+                                        Background="#FBE8EA"
+                                        Foreground="#B13B4D"
+                                        Margin="0,5,0,0"
+                                        Command="{Binding RemoveCommand}"/>
+
+                            </StackPanel>
+                        </GroupBox>
+
+                        <!-- Uue roboti lisamine -->
+                        <GroupBox Grid.Column="1"
+                                  Header="3. Lisa uus robot">
+
+                            <StackPanel>
+
+                                <TextBlock Text="Roboti nimi"
+                                           FontWeight="SemiBold"
+                                           Margin="0,0,0,5"/>
+
+                                <TextBox Text="{Binding RobotName, UpdateSourceTrigger=PropertyChanged}"
+                                         MaxLength="30"
+                                         Margin="0,0,0,12"/>
+
+                                <TextBlock Text="Roboti tüüp"
+                                           FontWeight="SemiBold"
+                                           Margin="0,0,0,5"/>
+
+                                <ComboBox x:Name="RobotTypeComboBox"
+                                          SelectedIndex="0"
+                                          Margin="0,0,0,12">
+
+                                    <ComboBoxItem Content="CleanerBot"/>
+                                    <ComboBoxItem Content="ExplorerBot"/>
+                                    <ComboBoxItem Content="RepairBot"/>
+                                    <ComboBoxItem Content="DanceBot"/>
+                                    <ComboBoxItem Content="ChefBot"/>
+                                    <ComboBoxItem Content="GuardBot"/>
+                                    <ComboBoxItem Content="FlyingBot"/>
+
+                                </ComboBox>
+
+                                <Button Content="+ Lisa robot"
+                                        Background="#7454B8"
+                                        Foreground="White"
+                                        HorizontalAlignment="Stretch"
+                                        Margin="0"
+                                        Click="AddRobotButton_Click"/>
+
+                            </StackPanel>
+                        </GroupBox>
+                    </Grid>
+
+                    <!-- TEGEVUSTE LOGI -->
+                    <GroupBox Grid.Row="2"
+                              Header="4. Tegevuste ajalugu">
+
+                        <DockPanel>
+
+                            <TextBlock x:Name="LogTitleText"
+                                       Visibility="Collapsed"/>
+
+                            <ListBox ItemsSource="{Binding Logs}"
+                                     BorderBrush="#DDD5EA"/>
+
+                        </DockPanel>
+                    </GroupBox>
+
+                </Grid>
+            </TabItem>
+
+            <!-- ARVUTUSED -->
+            <TabItem x:Name="CalculationsTab"
+                     Header="Arvutused">
+
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+
+                    <StackPanel Margin="18">
+
+                        <TextBlock Text="Robotite arvutused"
+                                   FontSize="23"
+                                   FontWeight="Bold"
+                                   Foreground="{StaticResource DarkText}"
+                                   Margin="0,0,0,6"/>
+
+                        <TextBlock Text="Vali robotid, määra töömaht ja käivita arvutused."
+                                   Foreground="{StaticResource MutedText}"
+                                   Margin="0,0,0,15"/>
+
+                        <!-- Robotite valik -->
+                        <GroupBox Header="1. Vali robotid">
+
+                            <StackPanel>
+
+                                <TextBlock Text="Vali vähemalt 3 robotit."
+                                           Margin="0,0,0,10"/>
+
+                                <ItemsControl ItemsSource="{Binding Robots}">
+
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+
+                                            <Border Background="#F5F2FA"
+                                                    BorderBrush="#E2D9EF"
+                                                    BorderThickness="1"
+                                                    CornerRadius="7"
+                                                    Padding="12"
+                                                    Margin="0,0,10,10"
+                                                    MinWidth="180">
+
+                                                <CheckBox Content="{Binding Name}"
+                                                          IsChecked="{Binding IsSelected, Mode=TwoWay}"/>
+
+                                            </Border>
+
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+
+                            </StackPanel>
+                        </GroupBox>
+
+                        <!-- Arvutamise seaded -->
+                        <GroupBox Header="2. Arvutamise seaded">
+
+                            <StackPanel>
+
+                                <TextBlock Text="Töömaht (operatsioonide arv)"
+                                           FontWeight="SemiBold"
+                                           Margin="0,0,0,6"/>
+
+                                <TextBox Width="220"
+                                         HorizontalAlignment="Left"
+                                         Text="{Binding WorkAmount, UpdateSourceTrigger=LostFocus}"
+                                         Margin="0,0,0,12"/>
+
+                                <WrapPanel>
+
+                                    <Button Content="Järjestikune"
+                                            Width="150"
+                                            Click="SequentialButton_Click"/>
+
+                                    <Button Content="Paralleelne"
+                                            Width="150"
+                                            Click="ParallelButton_Click"/>
+
+                                    <Button Content="Tühista"
+                                            Width="120"
+                                            Background="#FBE8EA"
+                                            Foreground="#B13B4D"
+                                            Click="CancelButton_Click"/>
+
+                                </WrapPanel>
+
+                                <TextBlock Text="{Binding Message}"
+                                           Margin="0,8,0,0"
+                                           Foreground="{StaticResource MutedText}"/>
+
+                            </StackPanel>
+                        </GroupBox>
+
+                        <!-- Tulemused -->
+                        <GroupBox Header="3. Arvutuste tulemused">
+
+                            <StackPanel>
+
+                                <TextBlock Text="{Binding TotalTime}"
+                                           FontSize="16"
+                                           FontWeight="Bold"
+                                           Foreground="{StaticResource Purple}"
+                                           Margin="0,0,0,10"/>
+
+                                <!-- Kahe režiimi võrdlus -->
+                                <TextBlock Text="{Binding Comparison}"
+                                           TextWrapping="Wrap"
+                                           FontWeight="SemiBold"
+                                           Foreground="#7454B8"
+                                           Margin="0,8,0,10"/>  
+
+                                <DataGrid ItemsSource="{Binding Results}"
+                                          AutoGenerateColumns="False"
+                                          IsReadOnly="True"
+                                          Height="230"
+                                          RowHeight="32"
+                                          BorderBrush="#DDD5EA">
+
+                                    <DataGrid.Columns>
+
+                                        <DataGridTextColumn Header="Robot"
+                                                            Binding="{Binding RobotName}"
+                                                            Width="*"/>
+
+                                        <DataGridTextColumn Header="Tüüp"
+                                                            Binding="{Binding RobotType}"
+                                                            Width="*"/>
+
+                                        <DataGridTextColumn Header="Tulemus"
+                                                            Binding="{Binding Result}"
+                                                            Width="*"/>
+
+                                        <DataGridTextColumn Header="Staatus"
+                                                            Binding="{Binding Status}"
+                                                            Width="*"/>
+
+                                        <DataGridTextColumn Header="Aeg (ms)"
+                                                            Binding="{Binding TimeMs}"
+                                                            Width="*"/>
+
+                                        <DataGridTextColumn Header="Viga"
+                                                            Binding="{Binding Error}"
+                                                            Width="2*"/>
+
+                                    </DataGrid.Columns>
+                                </DataGrid>
+
+                            </StackPanel>
+                        </GroupBox>
+
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+        </TabControl>
+    </DockPanel>
 </Window>
